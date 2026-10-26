@@ -1,0 +1,37 @@
+.report, .maskedReport { max-width: 1040px; margin: auto; padding: 65px 35px 70px; }
+.report h1, .maskedReport h1 { margin: 16px 0 14px; font-size: clamp(30px, 4vw, 45px); font-weight: 500; line-height: 1.2; letter-spacing: -1.5px; }
+.report > p, .maskedReport > p { font-size: 13px; color: var(--muted); line-height: 1.9; }
+.maskedReport { filter: blur(9px); user-select: none; pointer-events: none; }
+.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 35px; }
+.metrics > div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 25px; }
+.metrics span { display: block; font-size: 11px; color: var(--muted); }
+.metrics strong { display: block; margin: 18px 0 12px; font-size: 42px; font-variant-numeric: tabular-nums; letter-spacing: -2px; font-weight: 550; }
+.metrics span:last-child { font-size: 10px; }
+.breakdown { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 28px; margin-top: 25px; }
+.breakdown h2 { font-size: 19px; margin: 0 0 28px; font-weight: 550; letter-spacing: -.5px; }
+.skillRow + .skillRow { margin-top: 26px; }
+.skillRow > div:first-child { display: flex; justify-content: space-between; gap: 15px; font-size: 12px; }
+.skillRow strong { font-weight: 500; color: var(--accent); }
+.skillTrack { height: 7px; background: var(--line); border-radius: 7px; margin: 12px 0; overflow: hidden; }
+.skillTrack > span { display: block; background: var(--accent); height: 100%; border-radius: inherit; }
+.skillRow p { font-size: 10px; color: var(--muted); margin: 0; line-height: 1.8; }
+.completeTag { display: block; font-size: 8px; color: var(--accent); letter-spacing: 1.4px; margin-top: 19px; font-weight: 600; }
+.authTabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin: 22px 0; background: var(--background); border: 1px solid var(--line); border-radius: 8px; }
+.authTabs button { background: none; color: var(--muted); border: 1px solid transparent; border-radius: 5px; padding: 9px 8px; font-size: 11px; cursor: pointer; }
+.authTabs button[aria-selected=true] { color: var(--foreground); background: var(--surface); border-color: var(--line); box-shadow: 0 2px 6px var(--shadow); }
+.authPanel { display: grid; gap: 15px; }
+.authPanel label { display: grid; gap: 8px; font-size: 11px; }
+.authPanel input { width: 100%; padding: 12px 13px; border-radius: 7px; border: 1px solid var(--line); background: var(--background); color: var(--muted); font-size: 12px; }
+.authPanel button { margin-top: 3px; }
+.authNotice { font-size: 10px !important; text-align: center; margin: 17px 0 0; }
+.backLink { display: block; text-align: center; color: var(--muted); font-size: 11px; margin-top: 19px; }
+.resultNote { font-size: 11px !important; margin: 25px 0; }
+@media (max-width: 650px) {
+  .report, .maskedReport { padding: 36px 20px; }
+  .metrics { gap: 10px; }
+  .metrics > div { padding: 17px 12px; }
+  .metrics strong { font-size: 28px; letter-spacing: -1px; }
+  .metrics span { font-size: 10px; }
+  .metrics span:last-child { font-size: 8px; }
+  .breakdown { padding: 23px 19px; }
+}
