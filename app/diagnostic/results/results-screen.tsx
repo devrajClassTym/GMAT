@@ -12,15 +12,17 @@ import { LockedResultsBackdrop } from "./locked-backdrop";
 import common from "../test/test.module.css";
 import styles from "./results.module.css";
 
-// Neither this report nor its answer key loads while the visitor is signed out.
+// Load the report only after sign-in or an explicit temporary preview bypass.
 const UnlockedResults = lazy(() => import("./unlocked-results"));
 
 export function ResultsScreen() {
   const user = useAuthUser();
   const router = useRouter();
+  const [skipLogin, setSkipLogin] = useState(false);
   const [attempt, setAttempt] = useState<Attempt | null>(null);
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   useEffect(() => {
+    try { setSkipLogin(sessionStorage.getItem("gmat-results-preview") === "1"); } catch { /* Preview still works for this render without storage. */ }
     const saved = readAttempt();
     if (!saved) { router.replace("/diagnostic"); return; }
     if (saved.completedAt === null) { router.replace("/diagnostic/test"); return; }
@@ -28,7 +30,7 @@ export function ResultsScreen() {
   }, [router]);
 
   if (!attempt) return <div className={common.page}><DiagnosticHeader label="DIAGNOSTIC COMPLETE" /><main className={common.loading} role="status">Preparing your results…</main></div>;
-  if (user) return <Suspense fallback={<div className={common.loading} role="status">Loading your results…</div>}><UnlockedResults attempt={attempt} name={user.name} /></Suspense>;
+  if (user || skipLogin) return <Suspense fallback={<div className={common.loading} role="status">Loading your results…</div>}><UnlockedResults attempt={attempt} name={user?.name ?? ""} /></Suspense>;
 
   return <div className={common.page}>
     <DiagnosticHeader label="DIAGNOSTIC COMPLETE" />
@@ -44,6 +46,10 @@ export function ResultsScreen() {
         <label>Password<input disabled type="password" placeholder="Enter your password" autoComplete={mode === "signin" ? "current-password" : "new-password"} /></label>
         <button className={common.primaryButton} disabled>{mode === "signin" ? "Sign in to view results" : "Create account to view results"}<DiagnosticIcon name="arrow" /></button>
       </div>
+      <button type="button" className={styles.skipButton} onClick={() => {
+        try { sessionStorage.setItem("gmat-results-preview", "1"); } catch { /* No persistence required to preview. */ }
+        setSkipLogin(true);
+      }}>Skip for now →</button>
       <p className={styles.authNotice}>Account access is coming soon. This is a UI preview; sign-in is not connected yet.</p>
       <Link href="/" className={styles.backLink}>← Back to home</Link>
     </DiagnosticModal>

@@ -2,7 +2,7 @@
 .page button, .page a { -webkit-tap-highlight-color: transparent; }
 .page button { font: inherit; cursor: pointer; }
 .page button:disabled { cursor: default; }
-.page button:focus-visible, .page a:focus-visible { outline: 3px solid #6599ed; outline-offset: 4px; }
+.page button:focus-visible, .page a:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
 .header { max-width: 1400px; margin: auto; padding: 24px 40px; display: flex; align-items: center; gap: 24px; border-bottom: 1px solid var(--line); }
 .brand { display: flex; align-items: center; gap: 7px; font-size: 19px; font-weight: 650; letter-spacing: -.5px; }
 .brand > svg { color: var(--accent); margin-right: 3px; }
@@ -22,20 +22,20 @@
 .timer div > span { display: block; color: var(--muted); font-size: 9px; }
 .timer strong { font-family: var(--font-geist-mono), monospace; font-size: 20px; font-weight: 500; font-variant-numeric: tabular-nums; }
 .paused { font-size: 7px; letter-spacing: 1px; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 4px 5px; }
-.endButton { display: block; border: 1px solid #ce4e4e; background: #a92d2d; color: #fff; border-radius: 7px; padding: 12px 16px; font-size: 11px !important; font-weight: 550 !important; }
+.endButton { display: block; border: 1px solid var(--danger); background: var(--danger); color: #fff; border-radius: 7px; padding: 12px 16px; font-size: 11px !important; font-weight: 550 !important; }
 .testBody { display: grid; grid-template-columns: 235px 1fr; }
 .sidebar { padding: 25px 22px; border-right: 1px solid var(--line); background: var(--surface); border-radius: 0 0 0 14px; }
 .sidebarTitle h2 { margin: 0 0 6px; font-size: 13px; font-weight: 600; }
 .sidebarTitle > span { font-size: 10px; color: var(--muted); }
 .questionGrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 23px; }
 .questionBox { aspect-ratio: 1; border: 1px solid var(--line); color: var(--muted); border-radius: 6px; background: var(--background); font-size: 11px !important; padding: 0; }
-.questionBox.submitted { background: #216f4b; color: #fff; border-color: #216f4b; }
-.questionBox.current { border: 2px solid #4487df; color: #4487df; box-shadow: 0 0 0 2px #4487df15; }
+.questionBox.submitted { background: var(--complete); color: #fff; border-color: var(--complete); }
+.questionBox.current { border: 2px solid var(--current); color: var(--current); box-shadow: 0 0 0 2px color-mix(in srgb, var(--current) 9%, transparent); }
 .legend { margin-top: 25px; display: grid; gap: 11px; }
 .legend > span { font-size: 10px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
 .legend i { width: 10px; height: 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--background); }
-.legend .greenDot { background: #216f4b; border-color: #216f4b; }
-.legend .blueDot { border: 2px solid #4487df; }
+.legend .greenDot { background: var(--complete); border-color: var(--complete); }
+.legend .blueDot { border: 2px solid var(--current); }
 .sidebarNote { margin-top: 22px; padding-top: 17px; border-top: 1px solid var(--line); font-size: 9px; line-height: 1.7; color: var(--muted); }
 .questionPanel { padding: 28px 34px 20px; min-width: 0; }
 .questionHeading { background: var(--surface); border-radius: 8px; }
@@ -58,7 +58,7 @@
 .questionNavigation > span { color: var(--muted); font-size: 10px; }
 .questionNavigation button { display: inline-flex; align-items: center; gap: 13px; background: var(--surface); border: 1px solid var(--line); color: var(--foreground); padding: 10px 14px; border-radius: 6px; font-size: 11px; }
 .demoNote { text-align: center; font-size: 10px; color: var(--muted); margin-top: 18px; }
-.shade { position: fixed; inset: 0; background: #091810b3; z-index: 10; }
+.shade { position: fixed; inset: 0; background: var(--overlay); z-index: 10; }
 .spotlight { position: relative; z-index: 12; outline: 3px solid #a8c8ff; outline-offset: 7px; box-shadow: 0 0 0 9px #a8c8ff18, 0 10px 45px #0003; border-radius: 8px; }
 .connector { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 14; color: #d3e3ff; overflow: visible; }
 .tourPanel { position: fixed; z-index: 15; width: min(350px, calc(100vw - 32px)); left: 16px; bottom: 16px; height: fit-content; max-height: calc(100dvh - 32px); overflow: auto; padding: 23px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface); color: var(--foreground); box-shadow: 0 20px 65px #0004; outline: none; }

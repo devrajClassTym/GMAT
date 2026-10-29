@@ -35,3 +35,27 @@
   .metrics span:last-child { font-size: 8px; }
   .breakdown { padding: 23px 19px; }
 }
+
+.skipButton { display: block; margin: 16px auto 0; padding: 8px 12px; border: 0; border-radius: 6px; background: transparent; color: var(--accent); font: inherit; font-size: 12px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.skipButton:focus-visible, .topicDetails summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.sectionLabel { display: block; color: var(--accent); font-size: 10px; font-weight: 600; letter-spacing: 1.3px; margin-bottom: 12px; }
+.breakdown h2 { margin-bottom: 14px; }
+.sectionIntro { color: var(--muted); font-size: 13px; line-height: 1.8; margin: 0 0 24px; }
+.topicDetails { margin-top: 12px; font-size: 12px; }
+.topicDetails summary { cursor: pointer; color: var(--foreground); padding: 6px 0; }
+.topicDetails ul { list-style: none; padding: 0; margin: 12px 0 0; }
+.topicDetails li { border-top: 1px solid var(--line); padding: 15px 0; }
+.topicDetails li > div { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 9px; }
+.topicDetails li strong { color: var(--foreground); }
+.topicDetails li > div > span { color: var(--muted); }
+.topicDetails li p { font-size: 12px; margin-top: 8px; }
+.uncertain { display: inline-block; font-size: 10px; line-height: 1.5; padding: 4px 8px; border: 1px solid var(--line); border-radius: 5px; color: var(--muted); background: var(--background); }
+.interpretation { border-top: 3px solid var(--accent); }
+.recommendations { display: grid; gap: 16px; }
+.recommendation { border: 1px solid var(--line); background: var(--background); border-radius: 9px; padding: 20px; }
+.recommendation h3 { font-size: 16px; font-weight: 550; margin: 12px 0; }
+.recommendation p { color: var(--muted); font-size: 13px; line-height: 1.8; margin-bottom: 18px; }
+.recommendation p strong { color: var(--foreground); font-weight: 500; }
+.practiceActions { display: flex; gap: 12px; margin-top: 24px; }
+.feedback { font-size: 14px; line-height: 1.8; padding: 16px; background: var(--background); border: 1px solid var(--line); border-radius: 8px; }
+.breakdown .practicePrompt { font-size: 20px; line-height: 1.6; margin: 20px 0; }

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ThemeToggle } from "../theme-toggle";
 import styles from "./walkthrough.module.css";
 
@@ -28,7 +28,7 @@ export function DiagnosticWalkthrough() {
   const panel = useRef<HTMLDivElement>(null);
   const active = step < finalStep ? steps[step] : null;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const target = active ? document.getElementById(`tour-${active.target}`) : null;
     target?.scrollIntoView({ block: window.innerWidth < 900 ? "start" : "center", behavior: "instant" });
     if (target && window.innerWidth < 900) window.scrollBy(0, -24);
@@ -55,18 +55,19 @@ export function DiagnosticWalkthrough() {
       }
       setPlacement({ x, y, fromX, fromY, toX, toY, width });
     }
-    const frame = requestAnimationFrame(positionPanel);
+    // Measure the new content and target before paint to avoid a fallback-position flash.
+    positionPanel();
     window.addEventListener("resize", positionPanel);
     window.addEventListener("scroll", positionPanel, true);
     const observer = new ResizeObserver(positionPanel);
     if (panel.current) observer.observe(panel.current);
-    return () => { cancelAnimationFrame(frame); observer.disconnect(); window.removeEventListener("resize", positionPanel); window.removeEventListener("scroll", positionPanel, true); };
+    return () => { observer.disconnect(); window.removeEventListener("resize", positionPanel); window.removeEventListener("scroll", positionPanel, true); };
   }, [active]);
 
   useEffect(() => { panel.current?.focus({ preventScroll: true }); }, [step]);
 
   function spotlight(name: string) { return active?.target === name ? styles.spotlight : ""; }
-  function goTo(next: number) { setPlacement(null); setStep(next); }
+  function goTo(next: number) { setStep(next); }
 
   return <div className={styles.page}>
     <header className={styles.header} inert>
@@ -101,7 +102,7 @@ export function DiagnosticWalkthrough() {
     </main>
     <div className={styles.shade} aria-hidden="true" />
     {active && placement && <svg className={styles.connector} aria-hidden="true"><defs><marker id="tour-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="currentColor" strokeWidth="1.8" /></marker></defs><path d={`M ${placement.fromX} ${placement.fromY} L ${placement.toX} ${placement.toY}`} fill="none" stroke="currentColor" strokeWidth="2" markerEnd="url(#tour-arrow)" /></svg>}
-    <div ref={panel} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="tour-title" aria-describedby="tour-description" className={`${styles.tourPanel} ${!active ? styles.finalPanel : ""}`} style={active && placement ? { left: placement.x, top: placement.y, width: placement.width } : undefined} onKeyDown={(event) => {
+    <div ref={panel} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="tour-title" aria-describedby="tour-description" className={`${styles.tourPanel} ${!active ? styles.finalPanel : ""}`} style={active ? placement ? { left: placement.x, top: placement.y, bottom: "auto", width: placement.width } : { visibility: "hidden" } : undefined} onKeyDown={(event) => {
       if (event.key === "Escape" && active) goTo(finalStep);
       if (event.key === "Tab") {
         const buttons = panel.current?.querySelectorAll<HTMLElement>("button:not(:disabled), a[href]");
