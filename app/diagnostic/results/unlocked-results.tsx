@@ -56,7 +56,7 @@ export default function UnlockedResults({ attempt, name }: { attempt: Attempt; n
         </article>)}</div>
         <p className={styles.resultNote}>For now, practice reuses the five diagnostic questions in each section. It supports review; repeated answers do not provide new diagnostic evidence.</p>
       </section>
-      <p className={styles.resultNote}>This is not an official GMAT score prediction. Unsubmitted answers do not count as correct or as evidence of a skill weakness. Results are calculated in your browser.</p>
+      <p className={styles.resultNote}></p>
       <Link className={common.secondaryButton} href="/">Back to home</Link>
     </main>
   </div>;

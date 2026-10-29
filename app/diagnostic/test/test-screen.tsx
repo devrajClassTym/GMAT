@@ -50,7 +50,6 @@ export function DiagnosticTest() {
           </section>
         </div>
       </div>
-      <p className={styles.footnote}>Dummy practice questions · Your progress is saved in this browser · Not an official GMAT score prediction</p>
     </main>
     {confirmEnd && !ended && <DiagnosticModal titleId="end-title" descriptionId="end-description" onClose={() => setConfirmEnd(false)}><span className={styles.modalIcon}><DiagnosticIcon name="check" /></span><h2 id="end-title">Ready to finish?</h2><p id="end-description">You’ve submitted {submitted} of {questions.length} answers. {submitted < questions.length ? `${questions.length - submitted} questions remain unsubmitted. Selected answers that haven’t been submitted won’t count.` : "All your answers are locked in."}</p><p>Once you end the diagnostic, you won’t be able to return to it.</p><div className={styles.modalActions}><button className={styles.secondaryButton} onClick={() => setConfirmEnd(false)}>Keep going</button><button className={styles.endButton} onClick={finish}>End Diagnostic</button></div></DiagnosticModal>}
   </div>;

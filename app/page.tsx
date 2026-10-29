@@ -45,7 +45,6 @@ export default function Home() {
             <div><Icon name="chart" /><strong>24<span>%</span></strong><p>Average practice score improvement</p></div>
             <div><Icon name="list" /><strong>15</strong><p>Questions to get started</p></div>
           </section>
-          <p className="sample-note">Learner and improvement figures are dummy data.</p>
         </div>
         <aside className="study-visual" aria-label="Illustrative GMAT practice question">
           <div className="floating-topic"><Icon name="spark" /><span>A smarter way to start</span></div>
