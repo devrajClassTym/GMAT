@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ThemeToggle } from "../theme-toggle";
+import { NavLinks } from "../nav-links";
 import styles from "./test/test.module.css";
 
 export function DiagnosticIcon({ name }: { name: "clock" | "arrow" | "check" | "lock" | "book" | "close" }) {
@@ -14,5 +15,5 @@ export function DiagnosticIcon({ name }: { name: "clock" | "arrow" | "check" | "
   return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={paths[name]} /></svg>;
 }
 export function DiagnosticHeader({ label }: { label: string }) {
-  return <header className={styles.header}><Link href="/" className={styles.brand}><DiagnosticIcon name="book" />GMAT<span>prep</span></Link><span className={styles.headerLabel}>{label}</span><ThemeToggle /></header>;
+  return <header className={styles.header}><Link href="/" className={styles.brand}><DiagnosticIcon name="book" />GMAT<span>prep</span></Link><NavLinks /><span className={styles.headerLabel}>{label}</span><ThemeToggle /></header>;
 }

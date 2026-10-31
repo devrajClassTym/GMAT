@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
+import { NavLinks } from "./nav-links";
 import "./landing.css";
 
 function Icon({ name }: { name: "arrow" | "users" | "chart" | "list" | "spark" | "check" }) {
@@ -25,10 +26,11 @@ export default function Home() {
           </svg>
           GMAT<span>prep</span>
         </Link>
-        <nav className="navbar-actions" aria-label="Account and appearance">
+        <NavLinks />
+        <div className="navbar-actions">
           <ThemeToggle />
           <button className="signup-button" type="button" disabled title="Signup will be available later">Sign up</button>
-        </nav>
+        </div>
       </header>
 
       <main className="hero">

@@ -1,0 +1,6 @@
+.nav { display: flex; align-items: center; gap: 6px; }
+.nav a { padding: 9px 14px; border: 1px solid transparent; border-radius: 8px; color: var(--muted); font-size: 12px; font-weight: 550; white-space: nowrap; }
+.nav a:hover { color: var(--foreground); background: var(--surface); border-color: var(--line); }
+.nav a[aria-current="page"] { color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); border-color: color-mix(in srgb, var(--accent) 25%, var(--line)); }
+.nav a:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+@media (max-width: 700px) { .nav { order: 3; width: 100%; } .nav a { flex: 1; text-align: center; padding: 9px 10px; } }
