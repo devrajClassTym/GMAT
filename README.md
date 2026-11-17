@@ -2,6 +2,24 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+Copy `.env.example` to `.env` for API configuration. `NEXT_PUBLIC_API_ENV=staging`
+selects `NEXT_PUBLIC_STAGING_API_URL`; set it to `production` to select
+`NEXT_PUBLIC_PRODUCTION_API_URL`. The supplied production URL is a placeholder
+and must be replaced before deployment. These public settings are bundled at
+build time, so rebuild after changing them.
+
+The `/register` and `/login` pages POST to `/auth/signup` and `/auth/login`
+through `lib/api.ts`. Use `apiRequest` for all new API calls so they share the
+configured base URL, error handling, cookies, and bearer credentials.
+The assumed JSON payloads are `{ name, email, password }` for signup and
+`{ email, password }` for login. Confirm these against the backend contract.
+Login accepts a response at the top level or under `data`, with optional `user`
+and `accessToken`, `access_token`, or `token` fields. Credentials are kept in
+memory and cookies are included; the API must allow credentialed CORS from this
+app's origin. Reloading clears the UI session: persistent session restoration
+requires a verified session endpoint, which has not been provided. Registration
+directs users to log in, allowing for email verification by the backend.
+
 First, run the development server:
 
 ```bash

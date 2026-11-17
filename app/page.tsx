@@ -29,7 +29,8 @@ export default function Home() {
         <NavLinks />
         <div className="navbar-actions">
           <ThemeToggle />
-          <button className="signup-button" type="button" disabled title="Signup will be available later">Sign up</button>
+          <Link href="/login">Log in</Link>
+          <Link className="signup-button" href="/register">Sign up</Link>
         </div>
       </header>
 

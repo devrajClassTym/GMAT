@@ -42,15 +42,13 @@ export function ResultsScreen() {
       <p id="signin-description">Your answers are saved. {mode === "signin" ? "Sign in" : "Create an account"} to view your strengths and see where to focus your prep.</p>
       <div className={styles.authTabs} role="tablist" aria-label="Account access"><button id="signin-tab" role="tab" aria-selected={mode === "signin"} aria-controls="account-panel" tabIndex={mode === "signin" ? 0 : -1} onClick={() => setMode("signin")} onKeyDown={event => { if (event.key === "ArrowRight" || event.key === "ArrowLeft") { setMode("signup"); document.getElementById("signup-tab")?.focus(); } }}>Sign in</button><button id="signup-tab" role="tab" aria-selected={mode === "signup"} aria-controls="account-panel" tabIndex={mode === "signup" ? 0 : -1} onClick={() => setMode("signup")} onKeyDown={event => { if (event.key === "ArrowRight" || event.key === "ArrowLeft") { setMode("signin"); document.getElementById("signin-tab")?.focus(); } }}>Create account</button></div>
       <div id="account-panel" role="tabpanel" aria-labelledby={mode === "signin" ? "signin-tab" : "signup-tab"} className={styles.authPanel}>
-        <label>Email address<input disabled type="email" placeholder="you@example.com" autoComplete="email" /></label>
-        <label>Password<input disabled type="password" placeholder="Enter your password" autoComplete={mode === "signin" ? "current-password" : "new-password"} /></label>
-        <button className={common.primaryButton} disabled>{mode === "signin" ? "Sign in to view results" : "Create account to view results"}<DiagnosticIcon name="arrow" /></button>
+        <Link className={common.primaryButton} href={`${mode === "signin" ? "/login" : "/register"}?next=/diagnostic/results`}>{mode === "signin" ? "Sign in to view results" : "Create account to view results"}<DiagnosticIcon name="arrow" /></Link>
       </div>
       <button type="button" className={styles.skipButton} onClick={() => {
         try { sessionStorage.setItem("gmat-results-preview", "1"); } catch { /* No persistence required to preview. */ }
         setSkipLogin(true);
       }}>Skip for now →</button>
-      <p className={styles.authNotice}>Account access is coming soon. This is a UI preview; sign-in is not connected yet.</p>
+      <p className={styles.authNotice}>Sign in or create an account to continue to your results.</p>
       <Link href="/" className={styles.backLink}>← Back to home</Link>
     </DiagnosticModal>
   </div>;
