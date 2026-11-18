@@ -6,7 +6,6 @@ import { useRef, useState, type FormEvent } from "react";
 import { apiRequest, isRecord, setAccessToken } from "../lib/api";
 import { useSetAuthUser } from "./auth-session";
 import { ThemeToggle } from "./theme-toggle";
-import styles from "./auth.module.css";
 
 export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const register = mode === "register";
@@ -15,7 +14,6 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const submitting = useRef(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -26,7 +24,6 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
     const email = String(fields.get("email") ?? "").trim();
     const password = String(fields.get("password") ?? "");
     setError("");
-    setMessage("");
     if (register && !name) {
       setError("Please enter your name.");
       return;
@@ -37,45 +34,46 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
     }
     submitting.current = true;
     setPending(true);
+    let accountCreated = false;
     try {
-      const result = await apiRequest(
-        register ? "/auth/signup" : "/auth/login",
-        {
-          method: "POST",
-          body: JSON.stringify(
-            register ? { name, email, password } : { email, password },
-          ),
-        },
-      );
       if (register) {
-        setMessage(
-          "Account created. You can now log in. If verification is required, check your email first.",
-        );
-        return;
+        await apiRequest("/auth/signup", {
+          method: "POST",
+          body: JSON.stringify({ name, email, password }),
+        });
+        accountCreated = true;
       }
+
+      const result = await apiRequest("/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
       const data =
         isRecord(result) && isRecord(result.data) ? result.data : result;
-      if (isRecord(data)) {
-        const token = data.accessToken ?? data.access_token ?? data.token;
-        setAccessToken(typeof token === "string" ? token : undefined);
-        const user = isRecord(data.user) ? data.user : null;
-        setUser({
-          id:
-            user && (typeof user.id === "string" || typeof user.id === "number")
-              ? String(user.id)
-              : email,
-          name: user && typeof user.name === "string" ? user.name : "",
-        });
-      } else {
-        setUser({ id: email, name: "" });
-      }
+      const token = isRecord(data)
+        ? (data.accessToken ?? data.access_token ?? data.token)
+        : undefined;
+      const user = isRecord(data) && isRecord(data.user) ? data.user : null;
+
+      setAccessToken(typeof token === "string" ? token : undefined);
+      setUser({
+        id:
+          typeof user?.id === "string" || typeof user?.id === "number"
+            ? String(user.id)
+            : email,
+        name: typeof user?.name === "string" ? user.name : name,
+      });
       const next = new URLSearchParams(window.location.search).get("next");
       router.replace(next === "/diagnostic/results" ? next : "/dashboard");
     } catch (cause) {
-      setError(
+      const message =
         cause instanceof Error
           ? cause.message
-          : "Something went wrong. Please try again.",
+          : "Something went wrong. Please try again.";
+      setError(
+        accountCreated
+          ? `Your account was created, but automatic login failed. Please log in. ${message}`
+          : message,
       );
     } finally {
       submitting.current = false;
@@ -84,23 +82,32 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   }
 
   return (
-    <div className={styles.page}>
-      <header className={styles.header}>
-        <Link href="/" className={styles.brand}>
+    <div className="min-h-dvh pt-7 px-6 pb-15 bg-[radial-gradient(ellipse_at_top_right,_var(--wash),_transparent_60%)] max-[480px]:pt-5 max-[480px]:px-4 max-[480px]:pb-10">
+      <header className="max-w-290 m-auto flex items-center justify-between">
+        <Link
+          href="/"
+          className="text-[24px] font-extrabold tracking-[-1px] [&_span]:text-accent"
+        >
           GMAT<span>prep</span>
         </Link>
         <ThemeToggle />
       </header>
-      <main className={styles.card}>
-        <p className={styles.eyebrow}>YOUR NEXT CHAPTER</p>
+      <main className="max-w-115 mt-15 mx-auto mb-0 p-9 border border-line rounded-[24px] bg-surface shadow-[0_20px_60px_var(--shadow)] [&_h1]:text-[clamp(28px,_5vw,_36px)] [&_h1]:leading-[1.2] [&_h1]:tracking-[-1.2px] [&_h1]:my-4 [&_h1]:mx-0 max-[480px]:mt-9 max-[480px]:p-6">
+        <p className="text-accent text-[11px] font-extrabold tracking-[2px]">
+          YOUR NEXT CHAPTER
+        </p>
         <h1>{register ? "Start your journey." : "Welcome back."}</h1>
-        <p className={styles.description}>
+        <p className="text-muted text-[14px] leading-[1.6]">
           {register
             ? "Create your account and take the next step toward your GMAT goal."
             : "Log in to continue your GMAT preparation."}
         </p>
-        <form onSubmit={submit} className={styles.form} aria-busy={pending}>
-          <fieldset disabled={pending || Boolean(message)}>
+        <form
+          onSubmit={submit}
+          className="mt-7 [&_fieldset]:border-0 [&_fieldset]:p-0 [&_fieldset]:m-0 [&_fieldset]:grid [&_fieldset]:gap-4.5 [&_fieldset]:min-w-0 [&_label]:grid [&_label]:gap-2 [&_label]:text-[13px] [&_label]:font-semibold [&_input]:w-full [&_input]:min-w-0 [&_input]:border [&_input]:border-line [&_input]:rounded-[10px] [&_input]:p-[13px] [&_input]:bg-background [&_input]:text-foreground [&_input]:text-[16px] [&_input:focus-visible]:outline-2 [&_input:focus-visible]:outline-accent [&_input:focus-visible]:outline-offset-2 [&_fieldset:disabled]:opacity-65"
+          aria-busy={pending}
+        >
+          <fieldset disabled={pending}>
             {register && (
               <label>
                 Full name
@@ -125,7 +132,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
             </label>
             <label>
               Password
-              <div className={styles.password}>
+              <div className="relative [&_input]:pr-16.5 [&_button]:absolute [&_button]:right-3 [&_button]:top-[50%] [&_button]:-translate-y-1/2 [&_button]:bg-transparent [&_button]:border-0 [&_button]:text-foreground [&_button]:cursor-pointer [&_button]:text-[12px]">
                 <input
                   name="password"
                   type={showPassword ? "text" : "password"}
@@ -152,7 +159,10 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
                 />
               </label>
             )}
-            <button className={styles.submit} type="submit">
+            <button
+              className="p-3.5 border-0 rounded-[10px] bg-accent text-button-text font-bold cursor-pointer mt-1.5"
+              type="submit"
+            >
               {pending
                 ? "Please wait…"
                 : register
@@ -161,13 +171,12 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
             </button>
           </fieldset>
           {error && (
-            <p className={styles.error} role="alert">
+            <p className="text-danger text-[14px]" role="alert">
               {error}
             </p>
           )}
-          {message && <p role="status">{message}</p>}
         </form>
-        <p className={styles.switch}>
+        <p className="text-muted text-[14px] leading-[1.6] mt-6 [&_a]:text-accent [&_a]:font-semibold">
           {register ? "Already have an account?" : "New to GMATprep?"}{" "}
           <Link
             href={register ? "/login" : "/register"}
@@ -186,7 +195,10 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
             {register ? "Log in" : "Create an account"}
           </Link>
         </p>
-        <Link className={styles.back} href="/">
+        <Link
+          className="text-muted text-[14px] leading-[1.6] inline-block mt-2"
+          href="/"
+        >
           ← Back to home
         </Link>
       </main>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import "./theme.css";
 import { AuthSessionProvider } from "./auth-session";
 
 const geistSans = Geist({
@@ -16,7 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "GMAT Prep | A smarter starting point",
-  description: "Find your GMAT starting point with a free 15-question diagnostic. No signup to begin; an account is required to view results.",
+  description:
+    "Find your GMAT starting point with a free 15-question diagnostic. No signup to begin; an account is required to view results.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -26,8 +26,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <head><script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem('stride-theme');document.documentElement.dataset.theme=t==='light'||t==='dark'?t:'light'}catch{}` }} /></head>
-      <body className="min-h-full flex flex-col"><AuthSessionProvider>{children}</AuthSessionProvider></body>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('stride-theme');document.documentElement.dataset.theme=t==='light'||t==='dark'?t:'light'}catch{}`,
+          }}
+        />
+      </head>
+      <body className="min-h-full flex flex-col">
+        <AuthSessionProvider>{children}</AuthSessionProvider>
+      </body>
     </html>
   );
 }

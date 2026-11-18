@@ -18,7 +18,8 @@ and `accessToken`, `access_token`, or `token` fields. Credentials are kept in
 memory and cookies are included; the API must allow credentialed CORS from this
 app's origin. Reloading clears the UI session: persistent session restoration
 requires a verified session endpoint, which has not been provided. Registration
-directs users to log in, allowing for email verification by the backend.
+automatically logs in with the submitted credentials and opens the dashboard (or
+returns to diagnostic results). Email verification is not required.
 
 First, run the development server:
 
@@ -68,3 +69,11 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Styling
+
+Use Tailwind utility classes in components for all layouts and visual styles.
+Do not add CSS modules or page-specific stylesheets. `app/globals.css` is the
+Tailwind entry; `app/theme.css` holds shared theme tokens, base defaults, and
+animation definitions. Use semantic utilities such as `bg-surface`,
+`text-foreground`, and `border-line` so both themes remain consistent.
